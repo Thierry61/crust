@@ -39,3 +39,7 @@ winapi = "~0.2"
 bench = false
 name = "crust_peer"
 path = "examples/crust_peer.rs"
+
+[features]
+# Activate feature with command: cargo build --features "local-network"
+local-network = []

@@ -151,7 +151,10 @@ impl<UID: Uid> ExchangeMsg<UID> {
                     let reason = BootstrapDenyReason::NodeNotWhitelisted;
                     return self.write(core, poll, Some((Message::BootstrapDenied(reason), 0)));
                 }
-
+                if cfg!(feature = "local-network") {
+                    trace!("Local network mode: Overriden external reachability check");
+                    return self.send_bootstrap_grant(core, poll, their_uid, CrustUser::Node);
+                }
                 for their_listener in direct_listeners
                         .into_iter()
                         .filter(|addr| ip_addr_is_global(&addr.ip())) {
